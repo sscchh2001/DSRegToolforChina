@@ -55,38 +55,52 @@ Function Test-DevRegConnectivity($Write){
     if ($global:ProxyServer -ne "NoProxy"){
         If($Write){Write-Host "Testing connection via winHTTP proxy..." -ForegroundColor Yellow; Write-Log -Message "Testing connection via winHTTP proxy..."}
         if ($global:login){
-            $PSScript = "(Invoke-WebRequest -uri 'login.microsoftonline.com/common/oauth2' -UseBasicParsing).StatusCode"
+            $PSScript = "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; (Invoke-WebRequest -uri 'login.partner.microsoftonline.cn/common/oauth2' -UseBasicParsing).StatusCode"
             $TestResult = RunPScript -PSScript $PSScript
         }else{
-            $PSScript = "(Invoke-WebRequest -uri 'login.microsoftonline.com/common/oauth2' -UseBasicParsing -Proxy $global:ProxyServer).StatusCode"
+            $PSScript = "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; (Invoke-WebRequest -uri 'login.partner.microsoftonline.cn/common/oauth2' -UseBasicParsing -Proxy $global:ProxyServer).StatusCode"
             $TestResult = RunPScript -PSScript $PSScript
         }
         if ($TestResult -eq 200){
-            If($Write){Write-Host "Connection to login.microsoftonline.com .............. Succeeded." -ForegroundColor Green; Write-Log -Message "Connection to login.microsoftonline.com .............. Succeeded."}
-            $TestConnResult = $TestConnResult + "Connection to login.microsoftonline.com .............. Succeeded."
+            If($Write){Write-Host "Connection to login.partner.microsoftonline.cn .............. Succeeded." -ForegroundColor Green; Write-Log -Message "Connection to login.partner.microsoftonline.cn .............. Succeeded."}
+            $TestConnResult = $TestConnResult + "Connection to login.partner.microsoftonline.cn .............. Succeeded."
         }else{
             $ProxyTestFailed=$true
         }
 
         if ($global:device){
-            $PSScript = "(Invoke-WebRequest -uri 'device.login.microsoftonline.com/common/oauth2' -UseBasicParsing).StatusCode"
+            $PSScript = "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; (Invoke-WebRequest -uri 'device.login.partner.microsoftonline.cn/common/oauth2' -UseBasicParsing).StatusCode"
             $TestResult = RunPScript -PSScript $PSScript
         }else{
-            $PSScript = "(Invoke-WebRequest -uri 'device.login.microsoftonline.com/common/oauth2' -UseBasicParsing -Proxy $global:ProxyServer).StatusCode"
+            $PSScript = "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; (Invoke-WebRequest -uri 'device.login.partner.microsoftonline.cn/common/oauth2' -UseBasicParsing -Proxy $global:ProxyServer).StatusCode"
             $TestResult = RunPScript -PSScript $PSScript
         }
         if ($TestResult -eq 200){
-            If($Write){Write-Host "Connection to device.login.microsoftonline.com ......  Succeeded." -ForegroundColor Green; Write-Log -Message "Connection to device.login.microsoftonline.com ......  Succeeded."}
-            $TestConnResult = $TestConnResult + "Connection to device.login.microsoftonline.com ......  Succeeded."
+            If($Write){Write-Host "Connection to device.login.partner.microsoftonline.cn ......  Succeeded." -ForegroundColor Green; Write-Log -Message "Connection to device.login.partner.microsoftonline.cn ......  Succeeded."}
+            $TestConnResult = $TestConnResult + "Connection to device.login.partner.microsoftonline.cn ......  Succeeded."
         }else{
             $ProxyTestFailed=$true
         }
 
         if ($global:enterprise){
-            $PSScript = "(Invoke-WebRequest -uri 'https://enterpriseregistration.windows.net/$global:TenantName/discover?api-version=1.7' -UseBasicParsing -Headers @{'Accept' = 'application/json'; 'ocp-adrs-client-name' = 'dsreg'; 'ocp-adrs-client-version' = '10'}).StatusCode"
+            $PSScript = "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; (Invoke-WebRequest -uri 'https://enterpriseregistration.partner.microsoftonline.cn/$global:TenantName/discover?api-version=1.7' -UseBasicParsing -Headers @{'Accept' = 'application/json'; 'ocp-adrs-client-name' = 'dsreg'; 'ocp-adrs-client-version' = '10'}).StatusCode"
             $TestResult = RunPScript -PSScript $PSScript
         }else{
-            $PSScript = "(Invoke-WebRequest -uri 'https://enterpriseregistration.windows.net/$global:TenantName/discover?api-version=1.7' -UseBasicParsing -Proxy $global:ProxyServer -Headers @{'Accept' = 'application/json'; 'ocp-adrs-client-name' = 'dsreg'; 'ocp-adrs-client-version' = '10'}).StatusCode"
+            $PSScript = "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; (Invoke-WebRequest -uri 'https://enterpriseregistration.partner.microsoftonline.cn/$global:TenantName/discover?api-version=1.7' -UseBasicParsing -Proxy $global:ProxyServer -Headers @{'Accept' = 'application/json'; 'ocp-adrs-client-name' = 'dsreg'; 'ocp-adrs-client-version' = '10'}).StatusCode"
+            $TestResult = RunPScript -PSScript $PSScript
+        }
+        if ($TestResult -eq 200){
+            If($Write){Write-Host "Connection to enterpriseregistration.partner.microsoftonline.cn ..... Succeeded." -ForegroundColor Green; Write-Log -Message "Connection to enterpriseregistration.partner.microsoftonline.cn ..... Succeeded."}
+            $TestConnResult = $TestConnResult + "Connection to enterpriseregistration.partner.microsoftonline.cn ..... Succeeded."
+        }else{
+            $ProxyTestFailed=$true
+        }
+
+        if ($global:enterprise){
+            $PSScript = "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; (Invoke-WebRequest -uri 'https://enterpriseregistration.windows.net/$global:TenantName/discover?api-version=1.7' -UseBasicParsing -Headers @{'Accept' = 'application/json'; 'ocp-adrs-client-name' = 'dsreg'; 'ocp-adrs-client-version' = '10'}).StatusCode"
+            $TestResult = RunPScript -PSScript $PSScript
+        }else{
+            $PSScript = "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; (Invoke-WebRequest -uri 'https://enterpriseregistration.windows.net/$global:TenantName/discover?api-version=1.7' -UseBasicParsing -Proxy $global:ProxyServer -Headers @{'Accept' = 'application/json'; 'ocp-adrs-client-name' = 'dsreg'; 'ocp-adrs-client-version' = '10'}).StatusCode"
             $TestResult = RunPScript -PSScript $PSScript
         }
         if ($TestResult -eq 200){
@@ -105,30 +119,32 @@ Function Test-DevRegConnectivity($Write){
             If($Write){Write-host "Testing connection via winInet..." -ForegroundColor Yellow; Write-Log -Message "Testing connection via winInet..."}
             If($Write){Write-Host ''}
         }
-        $PSScript = "(Invoke-WebRequest -uri 'login.microsoftonline.com/common/oauth2' -UseBasicParsing).StatusCode"
+
+        $PSScript = "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; (Invoke-WebRequest -uri 'login.partner.microsoftonline.cn/common/oauth2' -UseBasicParsing).StatusCode"
         $TestResult = RunPScript -PSScript $PSScript
         if ($TestResult -eq 200){
             $winInetProxy=$true
-            If($Write){Write-Host "Connection to login.microsoftonline.com .............. Succeeded." -ForegroundColor Green; Write-Log -Message "Connection to login.microsoftonline.com .............. Succeeded."}
-            $TestConnResult = $TestConnResult + "Connection to login.microsoftonline.com .............. Succeeded."
+            If($Write){Write-Host "Connection to login.partner.microsoftonline.cn .............. Succeeded." -ForegroundColor Green; Write-Log -Message "Connection to login.partner.microsoftonline.cn .............. Succeeded."}
+            $TestConnResult = $TestConnResult + "Connection to login.partner.microsoftonline.cn .............. Succeeded."
         }else{
             $global:TestFailed=$true
-            If($Write){Write-Host "Connection to login.microsoftonline.com ................. failed." -ForegroundColor Red; Write-Log -Message "Connection to login.microsoftonline.com ................. failed." -Level ERROR}
-            $TestConnResult = $TestConnResult + "Connection to login.microsoftonline.com ................. failed."
-        }
-        $PSScript = "(Invoke-WebRequest -uri 'device.login.microsoftonline.com/common/oauth2' -UseBasicParsing).StatusCode"
-        $TestResult = RunPScript -PSScript $PSScript
-        if ($TestResult -eq 200){
-            $winInetProxy=$true
-            If($Write){Write-Host "Connection to device.login.microsoftonline.com ......  Succeeded." -ForegroundColor Green; Write-Log -Message "Connection to device.login.microsoftonline.com ......  Succeeded."}
-            $TestConnResult = $TestConnResult + "Connection to device.login.microsoftonline.com ......  Succeeded."
-        }else{
-            $global:TestFailed=$true
-            If($Write){Write-Host "Connection to device.login.microsoftonline.com .......... failed." -ForegroundColor Red; Write-Log -Message "Connection to device.login.microsoftonline.com .......... failed." -Level ERROR}
-            $TestConnResult = $TestConnResult + "Connection to device.login.microsoftonline.com .......... failed."
+            If($Write){Write-Host "Connection to login.partner.microsoftonline.cn ................. failed." -ForegroundColor Red; Write-Log -Message "Connection to login.partner.microsoftonline.cn ................. failed." -Level ERROR}
+            $TestConnResult = $TestConnResult + "Connection to login.partner.microsoftonline.cn ................. failed."
         }
 
-        $PSScript = "(Invoke-WebRequest -uri 'https://enterpriseregistration.windows.net/$global:TenantName/discover?api-version=1.7' -UseBasicParsing -Headers @{'Accept' = 'application/json'; 'ocp-adrs-client-name' = 'dsreg'; 'ocp-adrs-client-version' = '10'}).StatusCode"
+        $PSScript = "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; (Invoke-WebRequest -uri 'device.login.partner.microsoftonline.cn/common/oauth2' -UseBasicParsing).StatusCode"
+        $TestResult = RunPScript -PSScript $PSScript
+        if ($TestResult -eq 200){
+            $winInetProxy=$true
+            If($Write){Write-Host "Connection to device.login.partner.microsoftonline.cn ......  Succeeded." -ForegroundColor Green; Write-Log -Message "Connection to device.login.partner.microsoftonline.cn ......  Succeeded."}
+            $TestConnResult = $TestConnResult + "Connection to device.login.partner.microsoftonline.cn ......  Succeeded."
+        }else{
+            $global:TestFailed=$true
+            If($Write){Write-Host "Connection to device.login.partner.microsoftonline.cn .......... failed." -ForegroundColor Red; Write-Log -Message "Connection to device.login.partner.microsoftonline.cn .......... failed." -Level ERROR}
+            $TestConnResult = $TestConnResult + "Connection to device.login.partner.microsoftonline.cn .......... failed."
+        }
+
+        $PSScript = "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; (Invoke-WebRequest -uri 'https://enterpriseregistration.windows.net/$global:TenantName/discover?api-version=1.7' -UseBasicParsing -Headers @{'Accept' = 'application/json'; 'ocp-adrs-client-name' = 'dsreg'; 'ocp-adrs-client-version' = '10'}).StatusCode"
         $TestResult = RunPScript -PSScript $PSScript
         if ($TestResult -eq 200){
             $winInetProxy=$true
@@ -139,6 +155,19 @@ Function Test-DevRegConnectivity($Write){
             If($Write){Write-Host "Connection to enterpriseregistration.windows.net ........ failed." -ForegroundColor Red; Write-Log -Message "Connection to enterpriseregistration.windows.net ........ failed." -Level ERROR}
             $TestConnResult = $TestConnResult + "Connection to enterpriseregistration.windows.net ........ failed."
         }
+
+        $PSScript = "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; (Invoke-WebRequest -uri 'https://enterpriseregistration.partner.microsoftonline.cn/$global:TenantName/discover?api-version=1.7' -UseBasicParsing -Headers @{'Accept' = 'application/json'; 'ocp-adrs-client-name' = 'dsreg'; 'ocp-adrs-client-version' = '10'}).StatusCode"
+        $TestResult = RunPScript -PSScript $PSScript
+        if ($TestResult -eq 200){
+            $winInetProxy=$true
+            If($Write){Write-Host "Connection to enterpriseregistration.partner.microsoftonline.cn ..... Succeeded." -ForegroundColor Green; Write-Log -Message "Connection to enterpriseregistration.partner.microsoftonline.cn ..... Succeeded."}
+            $TestConnResult = $TestConnResult + "Connection to enterpriseregistration.partner.microsoftonline.cn ..... Succeeded."
+        }else{
+            $global:TestFailed=$true
+            If($Write){Write-Host "Connection to enterpriseregistration.partner.microsoftonline.cn ........ failed." -ForegroundColor Red; Write-Log -Message "Connection to enterpriseregistration.partner.microsoftonline.cn ........ failed." -Level ERROR}
+            $TestConnResult = $TestConnResult + "Connection to enterpriseregistration.partner.microsoftonline.cn ........ failed."
+        }
+
     }
 
     # If test failed
@@ -185,25 +214,25 @@ Function Test-DevRegConnectivity-User($Write){
     $InternetConn1=$true
     $InternetConn2=$true
     $InternetConn3=$true
-    #$TestResult = (Test-NetConnection -ComputerName login.microsoftonline.com -Port 443).TcpTestSucceeded
-    $TestResult = (Invoke-WebRequest -uri 'login.microsoftonline.com/common/oauth2' -UseBasicParsing).StatusCode
+    #$TestResult = (Test-NetConnection -ComputerName login.partner.microsoftonline.cn -Port 443).TcpTestSucceeded
+    $TestResult = (Invoke-WebRequest -uri 'login.partner.microsoftonline.cn/common/oauth2' -UseBasicParsing).StatusCode
     if ($TestResult -eq 200){
-        If($Write){Write-Host "Connection to login.microsoftonline.com .............. Succeeded." -ForegroundColor Green; Write-Log -Message "Connection to login.microsoftonline.com .............. Succeeded."}
-        $TestConnResult = $TestConnResult + "Connection to login.microsoftonline.com .............. Succeeded."
+        If($Write){Write-Host "Connection to login.partner.microsoftonline.cn .............. Succeeded." -ForegroundColor Green; Write-Log -Message "Connection to login.partner.microsoftonline.cn .............. Succeeded."}
+        $TestConnResult = $TestConnResult + "Connection to login.partner.microsoftonline.cn .............. Succeeded."
     }else{
-        If($Write){Write-Host "Connection to login.microsoftonline.com ................. failed." -ForegroundColor Red; Write-Log -Message "Connection to login.microsoftonline.com ................. failed." -Level ERROR}
-        $TestConnResult = $TestConnResult + "Connection to login.microsoftonline.com ................. failed."
+        If($Write){Write-Host "Connection to login.partner.microsoftonline.cn ................. failed." -ForegroundColor Red; Write-Log -Message "Connection to login.partner.microsoftonline.cn ................. failed." -Level ERROR}
+        $TestConnResult = $TestConnResult + "Connection to login.partner.microsoftonline.cn ................. failed."
         $InternetConn1=$false
         $global:TestFailed=$true
     }
-    #$TestResult = (Test-NetConnection -ComputerName device.login.microsoftonline.com -Port 443).TcpTestSucceeded
-    $TestResult = (Invoke-WebRequest -uri 'device.login.microsoftonline.com/common/oauth2' -UseBasicParsing).StatusCode
+    #$TestResult = (Test-NetConnection -ComputerName device.login.partner.microsoftonline.cn -Port 443).TcpTestSucceeded
+    $TestResult = (Invoke-WebRequest -uri 'device.login.partner.microsoftonline.cn/common/oauth2' -UseBasicParsing).StatusCode
     if ($TestResult -eq 200){
-        If($Write){Write-Host "Connection to device.login.microsoftonline.com ......  Succeeded." -ForegroundColor Green ;Write-Log -Message "Connection to device.login.microsoftonline.com ......  Succeeded."}
-        $TestConnResult = $TestConnResult + "Connection to device.login.microsoftonline.com ......  Succeeded."
+        If($Write){Write-Host "Connection to device.login.partner.microsoftonline.cn ......  Succeeded." -ForegroundColor Green ;Write-Log -Message "Connection to device.login.partner.microsoftonline.cn ......  Succeeded."}
+        $TestConnResult = $TestConnResult + "Connection to device.login.partner.microsoftonline.cn ......  Succeeded."
     }else{
-        If($Write){Write-Host "Connection to device.login.microsoftonline.com .......... failed." -ForegroundColor Red ;Write-Log -Message "Connection to device.login.microsoftonline.com .......... failed." -Level ERROR}
-        $TestConnResult = $TestConnResult + "Connection to device.login.microsoftonline.com .......... failed."
+        If($Write){Write-Host "Connection to device.login.partner.microsoftonline.cn .......... failed." -ForegroundColor Red ;Write-Log -Message "Connection to device.login.partner.microsoftonline.cn .......... failed." -Level ERROR}
+        $TestConnResult = $TestConnResult + "Connection to device.login.partner.microsoftonline.cn .......... failed."
         $InternetConn2=$false
         $global:TestFailed=$true
     }
@@ -215,6 +244,17 @@ Function Test-DevRegConnectivity-User($Write){
     }else{
         If($Write){Write-Host "Connection to enterpriseregistration.windows.net ........ failed." -ForegroundColor Red ;Write-Log -Message "Connection to enterpriseregistration.windows.net ........ failed." -Level ERROR}
         $TestConnResult = $TestConnResult + "Connection to enterpriseregistration.windows.net ........ failed."
+        $InternetConn3=$false
+        $global:TestFailed=$true
+    }
+    #$TestResult = (Test-NetConnection -ComputerName enterpriseregistration.partner.microsoftonline.cn -Port 443).TcpTestSucceeded
+    $TestResult = (Invoke-WebRequest -uri 'https://enterpriseregistration.partner.microsoftonline.cn/microsoft.com/discover?api-version=1.7' -UseBasicParsing -Headers @{'Accept' = 'application/json'; 'ocp-adrs-client-name' = 'dsreg'; 'ocp-adrs-client-version' = '10'}).StatusCode
+    if ($TestResult -eq 200){
+        If($Write){Write-Host "Connection to enterpriseregistration.partner.microsoftonline.cn ..... Succeeded." -ForegroundColor Green ;Write-Log -Message "Connection to enterpriseregistration.partner.microsoftonline.cn ..... Succeeded."}
+        $TestConnResult = $TestConnResult + "Connection to enterpriseregistration.partner.microsoftonline.cn ..... Succeeded."
+    }else{
+        If($Write){Write-Host "Connection to enterpriseregistration.partner.microsoftonline.cn ........ failed." -ForegroundColor Red ;Write-Log -Message "Connection to enterpriseregistration.partner.microsoftonline.cn ........ failed." -Level ERROR}
+        $TestConnResult = $TestConnResult + "Connection to enterpriseregistration.partner.microsoftonline.cn ........ failed."
         $InternetConn3=$false
         $global:TestFailed=$true
     }
@@ -277,7 +317,8 @@ Function Write-Log{
 }
 
 Function PSasAdmin{
-    $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())    $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+    $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+    $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 }
 
 Function Test-DevRegApp-old{
@@ -311,7 +352,7 @@ Function Test-DevRegApp{
                 'Content-Type'  = "application\json"
                 'Authorization' = "Bearer $global:accesstoken"
                 }
-    $GraphLink = "https://graph.microsoft.com/v1.0/servicePrincipals?`$filter=appId eq '01cb2876-7ebd-4aa4-9cc9-d28bd4d359a9'"
+    $GraphLink = "https://microsoftgraph.chinacloudapi.cn/v1.0/servicePrincipals?`$filter=appId eq '01cb2876-7ebd-4aa4-9cc9-d28bd4d359a9'"
     $GraphResult=""
     $GraphResult = (Invoke-WebRequest -Headers $Headers -Uri $GraphLink -UseBasicParsing -Method "GET" -ContentType "application/json").Content | ConvertFrom-Json
 
@@ -466,7 +507,7 @@ Function SyncJoinCheck($Fallback){
                 'Content-Type'  = "application\json"
                 'Authorization' = "Bearer $global:accesstoken"
                 }
-    $GraphLink = "https://graph.microsoft.com/v1.0/devices?`$filter=deviceId eq '$ComputerGUID'"
+    $GraphLink = "https://microsoftgraph.chinacloudapi.cn/v1.0/devices?`$filter=deviceId eq '$ComputerGUID'"
     $GraphResult = Invoke-WebRequest -Headers $Headers -Uri $GraphLink -UseBasicParsing -Method "GET" -ContentType "application/json"
     $AADDevice=$GraphResult.Content | ConvertFrom-Json
     if($AADDevice.value.Count -ge 1){
@@ -708,7 +749,7 @@ Function CheckPRT{
                 Write-Host ''
                 Write-Host "Testing Azure AD PRT registry value..." -ForegroundColor Yellow
                 Write-Log -Message "Testing Azure AD PRT registry value..."
-                if ((Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\AAD\Storage\https://login.microsoftonline.com -ErrorAction SilentlyContinue).PSPath){
+                if ((Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\AAD\Storage\https://login.partner.microsoftonline.cn -ErrorAction SilentlyContinue).PSPath){
                     Write-Host "Test passed: Azure AD PRT registry value exists for the looged on user" -ForegroundColor Green
                     Write-Log -Message "Test passed: Azure AD PRT registry value exists for the looged on user"
                     Write-Host ''
@@ -773,11 +814,11 @@ Function checkProxy($Write){
         $global:ProxyServer = "http://" + $global:ProxyServer
     }
 
-    $global:login= $global:Bypass.Contains("*.microsoftonline.com") -or $global:Bypass.Contains("login.microsoftonline.com")
+    $global:login= $global:Bypass.Contains("*.partner.microsoftonline.cn") -or $global:Bypass.Contains("login.partner.microsoftonline.cn")
 
-    $global:device= $global:Bypass.Contains("*.microsoftonline.com") -or $global:Bypass.Contains("*.login.microsoftonline.com") -or $global:Bypass.Contains("device.login.microsoftonline.com")
+    $global:device= $global:Bypass.Contains("*.partner.microsoftonline.cn") -or $global:Bypass.Contains("*.login.partner.microsoftonline.cn") -or $global:Bypass.Contains("device.login.partner.microsoftonline.cn")
 
-    $global:enterprise= $global:Bypass.Contains("*.windows.net") -or $global:Bypass.Contains("enterpriseregistration.windows.net")
+    $global:enterprise= $global:Bypass.Contains("*.windows.net") -or $global:Bypass.Contains("enterpriseregistration.windows.net") -or $global:Bypass.Contains("*.partner.microsoftonline.cn") -or $global:Bypass.Contains("enterpriseregistration.partner.microsoftonline.cn")
 
     #CheckwinInet proxy
     If($Write){Write-Host ''}
@@ -1085,9 +1126,9 @@ Function VerifySCP{
         Write-Log -Message "Testing Tenant Name..."
         $RegTenantName=$Reg.TenantName
         $InvokeResult=""
-        $InvokeResult=(Invoke-WebRequest -Uri "https://login.microsoftonline.com/$RegTenantName/.well-known/openid-configuration" -UseBasicParsing).content | ConvertFrom-Json
+        $InvokeResult=(Invoke-WebRequest -Uri "https://login.partner.microsoftonline.cn/$RegTenantName/.well-known/openid-configuration" -UseBasicParsing).content | ConvertFrom-Json
         if($InvokeResult){
-            $TenantID=($InvokeResult.issuer.tostring() -split "https://sts.windows.net/")[1].trim()
+            $TenantID=($InvokeResult.issuer.tostring() -split "https://sts.chinacloudapi.cn/")[1].trim()
             $TenantID=($TenantID.tostring() -split "/")[0].trim()
             Write-Host "Tenant Name is configured correctly" -ForegroundColor Green
             Write-Log -Message "Tenant Name is configured correctly"
@@ -1188,9 +1229,9 @@ Function VerifySCP{
             Write-Host "Testing Tenant Name..." -ForegroundColor Yellow
             Write-Log -Message "Testing Tenant Name..."
             $InvokeResult=""
-            $InvokeResult=(Invoke-WebRequest -Uri "https://login.microsoftonline.com/$TN/.well-known/openid-configuration" -UseBasicParsing).content | ConvertFrom-Json
+            $InvokeResult=(Invoke-WebRequest -Uri "https://login.partner.microsoftonline.cn/$TN/.well-known/openid-configuration" -UseBasicParsing).content | ConvertFrom-Json
             if($InvokeResult){
-                $TenantID=($InvokeResult.issuer.tostring() -split "https://sts.windows.net/")[1].trim()
+                $TenantID=($InvokeResult.issuer.tostring() -split "https://sts.chinacloudapi.cn/")[1].trim()
                 $TenantID=($TenantID.tostring() -split "/")[0].trim()
                 Write-Host "Test passed: Tenant Name is configured correctly" -ForegroundColor Green
                 Write-Log -Message "Test passed: Tenant Name is configured correctly"
@@ -1318,22 +1359,50 @@ Function getSCP{
 }
 
 Function ExportEventViewerLogs ($EventViewerLogs,$ExportPath){
-    ForEach ($EventViewerLog in $EventViewerLogs){		$EventViewerLogAfter = [regex]::Replace($EventViewerLog,"/","-")        $EventViewerLogAfter=($EventViewerLogAfter -split "Microsoft-Windows-")[1].trim()		$ExportedFileName = $ExportPath +"\"+ $EventViewerLogAfter+".evtx"
-        (New-Object System.Diagnostics.Eventing.Reader.EventLogSession).ExportLogAndMessages($EventViewerLog,'LogName','*',$ExportedFileName)        Write-Log -Message "$EventViewerLogAfter event log exported successfully" -logfile "$global:LogsPath\Log.log"    }
+    ForEach ($EventViewerLog in $EventViewerLogs){
+		$EventViewerLogAfter = [regex]::Replace($EventViewerLog,"/","-")
+        $EventViewerLogAfter=($EventViewerLogAfter -split "Microsoft-Windows-")[1].trim()
+		$ExportedFileName = $ExportPath +"\"+ $EventViewerLogAfter+".evtx"
+        (New-Object System.Diagnostics.Eventing.Reader.EventLogSession).ExportLogAndMessages($EventViewerLog,'LogName','*',$ExportedFileName)
+        Write-Log -Message "$EventViewerLogAfter event log exported successfully" -logfile "$global:LogsPath\Log.log"
+    }
 }
 
-Function EnableDebugEvents ($DbgEvents){    ForEach ($evt in $DbgEvents){        $Log=New-Object System.Diagnostics.Eventing.Reader.EventlogConfiguration $evt        $Log.IsEnabled =$false        $Log.SaveChanges()        $Log.IsEnabled =$true        $Log.SaveChanges()        Write-Log -Message "$evt enabled" -logfile "$global:LogsPath\Log.log"    }}
+Function EnableDebugEvents ($DbgEvents){
+    ForEach ($evt in $DbgEvents){
+        $Log=New-Object System.Diagnostics.Eventing.Reader.EventlogConfiguration $evt
+        $Log.IsEnabled =$false
+        $Log.SaveChanges()
+        $Log.IsEnabled =$true
+        $Log.SaveChanges()
+        Write-Log -Message "$evt enabled" -logfile "$global:LogsPath\Log.log"
+    }
+}
 
-Function DisableDebugEvents ($DbgEvents){    ForEach ($evt in $DbgEvents){	    $Log = New-Object System.Diagnostics.Eventing.Reader.EventlogConfiguration $evt		$Log.IsEnabled = $false		$Log.SaveChanges()        Write-Log -Message "$evt disabled" -logfile "$global:LogsPath\Log.log"    }
+Function DisableDebugEvents ($DbgEvents){
+    ForEach ($evt in $DbgEvents){
+	    $Log = New-Object System.Diagnostics.Eventing.Reader.EventlogConfiguration $evt
+		$Log.IsEnabled = $false
+		$Log.SaveChanges()
+        Write-Log -Message "$evt disabled" -logfile "$global:LogsPath\Log.log"
+    }
 }
 
 Function CollectLogAADExt($RunLogs){
-    Push-Location $global:LogsPath    ForEach ($RunLog in $RunLogs){		cmd.exe /c $RunLog        Write-Log -Message $RunLog -logfile "$global:LogsPath\Log.log"    }
+    Push-Location $global:LogsPath
+    ForEach ($RunLog in $RunLogs){
+		cmd.exe /c $RunLog
+        Write-Log -Message $RunLog -logfile "$global:LogsPath\Log.log"
+    }
     Pop-Location
 }
 
 Function CollectLog($RunLogs){
-    Push-Location $global:LogsPath    ForEach ($RunLog in $RunLogs){		powershell.exe $RunLog        Write-Log -Message $RunLog -logfile "$global:LogsPath\Log.log"    }
+    Push-Location $global:LogsPath
+    ForEach ($RunLog in $RunLogs){
+		powershell.exe $RunLog
+        Write-Log -Message $RunLog -logfile "$global:LogsPath\Log.log"
+    }
     Pop-Location
 }
 
@@ -1376,12 +1445,21 @@ Function CopyFiles{
     StartCopyFile "$env:windir\system32\Lsass.log" "Lsass.log"
 }
 
-Function CompressLogsFolder{    $ErrorActionPreference = "SilentlyContinue"    #$CompressedFile = "DSRegTool_Logs_" + (Get-Date -Format yyyy-MM-dd_HH-mm)    $CompressedFile = "DSRegTool_Logs_" + (Get-Date).ToUniversalTime().ToString('yyyy-MM-dd_HH-mm')    $FolderContent = "$(Join-Path -Path $pwd.Path -ChildPath $CompressedFile).zip"    Add-Type -Assembly "System.IO.Compression.FileSystem"    [System.IO.Compression.ZipFile]::CreateFromDirectory($global:LogsPath, $FolderContent)
+Function CompressLogsFolder{
+    $ErrorActionPreference = "SilentlyContinue"
+    #$CompressedFile = "DSRegTool_Logs_" + (Get-Date -Format yyyy-MM-dd_HH-mm)
+    $CompressedFile = "DSRegTool_Logs_" + (Get-Date).ToUniversalTime().ToString('yyyy-MM-dd_HH-mm')
+    $FolderContent = "$(Join-Path -Path $pwd.Path -ChildPath $CompressedFile).zip"
+    Add-Type -Assembly "System.IO.Compression.FileSystem"
+    [System.IO.Compression.ZipFile]::CreateFromDirectory($global:LogsPath, $FolderContent)
     Write-host "Compressed file is ready in $FolderContent" -ForegroundColor Yellow
     # Cleanup the Temporary Folder (if error retain the temp files)
     if(Test-Path -Path $pwd.Path){
 		Remove-Item -Path $global:LogsPath -Force -Recurse | Out-Null
-    }else{		Write-host "The Archive could not be created. Keeping Temporary Folder $global:LogsPath"		New-Item -ItemType directory -Path $pwd.Path -Force | Out-Null    }
+    }else{
+		Write-host "The Archive could not be created. Keeping Temporary Folder $global:LogsPath"
+		New-Item -ItemType directory -Path $pwd.Path -Force | Out-Null
+    }
 }
 
 Function LogmanStart($Trace,$Providers){
@@ -1436,7 +1514,14 @@ Function StartLogCollection{
     '{d48533a7-98e4-566d-4956-12474e32a680},0xffffffffffffffff,0xff',`
     '{072665fb-8953-5a85-931d-d06aeab3d109},0xffffffffffffffff,0xff',`
     '{EF00584A-2655-462C-BC24-E7DE630E7FBF},0xffffffffffffffff,0xff',`
-    '{c632d944-dddb-599f-a131-baf37bf22ef0},0xffffffffffffffff,0xff',`    '{ACC49822-F0B2-49FF-BFF2-1092384822B6},0xffffffffffffffff,0xff',`    '{5AA2DC10-E0E7-4BB2-A186-D230D79442D7},0xffffffffffffffff,0xff',`    '{7AE961F7-1262-48E2-B237-ACBA331CC970},0xffffffffffffffff,0xff',`    '{519B3601-C289-44FB-B3E4-A05841D2790D},0xffffffffffffffff,0xff',`    '{ACC49822-F0B2-49FF-BFF2-1092384822B6},0xffffffffffffffff,0xff'    $LSA='{D0B639E0-E650-4D1D-8F39-1580ADE72784},0xC43EFF,0xff',`
+    '{c632d944-dddb-599f-a131-baf37bf22ef0},0xffffffffffffffff,0xff',`
+    '{ACC49822-F0B2-49FF-BFF2-1092384822B6},0xffffffffffffffff,0xff',`
+    '{5AA2DC10-E0E7-4BB2-A186-D230D79442D7},0xffffffffffffffff,0xff',`
+    '{7AE961F7-1262-48E2-B237-ACBA331CC970},0xffffffffffffffff,0xff',`
+    '{519B3601-C289-44FB-B3E4-A05841D2790D},0xffffffffffffffff,0xff',`
+    '{ACC49822-F0B2-49FF-BFF2-1092384822B6},0xffffffffffffffff,0xff'
+
+    $LSA='{D0B639E0-E650-4D1D-8F39-1580ADE72784},0xC43EFF,0xff',`
     '{169EC169-5B77-4A3E-9DB6-441799D5CACB},0xffffff,0xff',`
     '{DAA76F6A-2D11-4399-A646-1D62B7380F15},0xffffff,0xff',`
     '{366B218A-A5AA-4096-8131-0BDAFCC90E93},0xfffffff,0xff',`
@@ -1448,16 +1533,22 @@ Function StartLogCollection{
     '{C00D6865-9D89-47F1-8ACB-7777D43AC2B9},0xffffffffffffffff,0xff',`
     '{7C9FCA9A-EBF7-43FA-A10A-9E2BD242EDE6},0xffffffffffffffff,0xff',`
     '{794FE30E-A052-4B53-8E29-C49EF3FC8CBE},0xffffffffffffffff,0xff',`
-    '{ba634d53-0db8-55c4-d406-5c57a9dd0264},0xffffffffffffffff,0xff'    $Ntlm_CredSSP='{5BBB6C18-AA45-49b1-A15F-085F7ED0AA90},0x5ffDf,0xff',`
+    '{ba634d53-0db8-55c4-d406-5c57a9dd0264},0xffffffffffffffff,0xff'
+
+    $Ntlm_CredSSP='{5BBB6C18-AA45-49b1-A15F-085F7ED0AA90},0x5ffDf,0xff',`
     '{AC43300D-5FCC-4800-8E99-1BD3F85F0320},0xffffffffffffffff,0xff',`
     '{6165F3E2-AE38-45D4-9B23-6B4818758BD9},0xffffffff,0xff',`
     '{DAA6CAF5-6678-43f8-A6FE-B40EE096E06E},0xffffffffffffffff,0xff',`
-    '{AC69AE5B-5B21-405F-8266-4424944A43E9},0xffffffff,0xff'    $Kerberos='{97A38277-13C0-4394-A0B2-2A70B465D64F},0xff,0xff',`
+    '{AC69AE5B-5B21-405F-8266-4424944A43E9},0xffffffff,0xff'
+
+    $Kerberos='{97A38277-13C0-4394-A0B2-2A70B465D64F},0xff,0xff',`
     '{FACB33C4-4513-4C38-AD1E-57C1F6828FC0},0xffffffff,0xff',`
     '{8a4fc74e-b158-4fc1-a266-f7670c6aa75d},0xffffffffffffffff,0xff',`
     '{60A7AB7A-BC57-43E9-B78A-A1D516577AE3},0xffffff,0xff',`
     '{98E6CFCB-EE0A-41E0-A57B-622D4E1B30B1},0xffffffffffffffff,0xff',`
-    '{6B510852-3583-4e2d-AFFE-A67F9F223438},0x7ffffff,0xff'    #Create DSRegToolLogs folder.
+    '{6B510852-3583-4e2d-AFFE-A67F9F223438},0x7ffffff,0xff'
+
+    #Create DSRegToolLogs folder.
     Write-Log -Message "Log collection has started"
     Write-Host "Creating DSRegToolLogs folder under $pwd" -ForegroundColor Yellow
     if (!(Test-Path $global:LogsPath)){
@@ -1492,7 +1583,33 @@ Function StartLogCollection{
     Write-Host "Collecting PreTrace logs..." -ForegroundColor Yellow
     Write-Log -Message "Collecting PreTrace logs..." -logfile "$global:LogsPath\Log.log"
     ExportEventViewerLogs $global:PreTraceEvents $global:PreTrace
-    dsregcmd /status | Out-file "$global:PreTrace\dsregcmd-status.txt"    Write-Log -Message "dsregcmd-status.txt created in PreTrace folder" -logfile "$global:LogsPath\Log.log"    RunPScript -PSScript "dsregcmd /status /debug" | Out-file "$global:PreTrace\dsregcmd-debug.txt"    Write-Log -Message "dsregcmd-debug.txt created in PreTrace folder" -logfile "$global:LogsPath\Log.log"    #Press ENTER to start log collection:    Write-Host ''    Write-Host "Please press ENTER to start log collection..." -ForegroundColor Green -NoNewline    Write-Log -Message "Please press ENTER to start log collection..." -logfile "$global:LogsPath\Log.log"    Read-Host    Write-Host "Starting log collection..." -ForegroundColor Yellow    Write-Log -Message "Starting log collection..." -logfile "$global:LogsPath\Log.log"    #Enable debug and network logs:    Write-Host "Enabling debug logs..." -ForegroundColor Yellow    Write-Log -Message "Enabling debug logs..." -logfile "$global:LogsPath\Log.log"    EnableDebugEvents $global:DebugLogs    Write-Host "Starting network traces..." -ForegroundColor Yellow    Write-Log -Message "Starting network traces..." -logfile "$global:LogsPath\Log.log"    LogmanStart "WebAuth" $WebAuth    Write-Log -Message "WebAuth log collection started..." -logfile "$global:LogsPath\Log.log"    LogmanStart "LSA" $LSA    Write-Log -Message "LSA log collection started..." -logfile "$global:LogsPath\Log.log"    LogmanStart "Ntlm_CredSSP" $Ntlm_CredSSP    Write-Log -Message "Ntlm_CredSSP log collection started..." -logfile "$global:LogsPath\Log.log"    LogmanStart "Kerberos" $Kerberos    Write-Log -Message "Kerberos log collection started..." -logfile "$global:LogsPath\Log.log"    $Reg=Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\ProductOptions -ErrorAction SilentlyContinue
+    dsregcmd /status | Out-file "$global:PreTrace\dsregcmd-status.txt"
+    Write-Log -Message "dsregcmd-status.txt created in PreTrace folder" -logfile "$global:LogsPath\Log.log"
+    RunPScript -PSScript "dsregcmd /status /debug" | Out-file "$global:PreTrace\dsregcmd-debug.txt"
+    Write-Log -Message "dsregcmd-debug.txt created in PreTrace folder" -logfile "$global:LogsPath\Log.log"
+    #Press ENTER to start log collection:
+    Write-Host ''
+    Write-Host "Please press ENTER to start log collection..." -ForegroundColor Green -NoNewline
+    Write-Log -Message "Please press ENTER to start log collection..." -logfile "$global:LogsPath\Log.log"
+    Read-Host
+
+    Write-Host "Starting log collection..." -ForegroundColor Yellow
+    Write-Log -Message "Starting log collection..." -logfile "$global:LogsPath\Log.log"
+    #Enable debug and network logs:
+    Write-Host "Enabling debug logs..." -ForegroundColor Yellow
+    Write-Log -Message "Enabling debug logs..." -logfile "$global:LogsPath\Log.log"
+    EnableDebugEvents $global:DebugLogs
+    Write-Host "Starting network traces..." -ForegroundColor Yellow
+    Write-Log -Message "Starting network traces..." -logfile "$global:LogsPath\Log.log"
+    LogmanStart "WebAuth" $WebAuth
+    Write-Log -Message "WebAuth log collection started..." -logfile "$global:LogsPath\Log.log"
+    LogmanStart "LSA" $LSA
+    Write-Log -Message "LSA log collection started..." -logfile "$global:LogsPath\Log.log"
+    LogmanStart "Ntlm_CredSSP" $Ntlm_CredSSP
+    Write-Log -Message "Ntlm_CredSSP log collection started..." -logfile "$global:LogsPath\Log.log"
+    LogmanStart "Kerberos" $Kerberos
+    Write-Log -Message "Kerberos log collection started..." -logfile "$global:LogsPath\Log.log"
+    $Reg=Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\ProductOptions -ErrorAction SilentlyContinue
     if ($Reg.ProductType -eq "WinNT"){
         netsh trace start InternetClient persistent=yes traceFile=.\DSRegToolLogs\Netmon.etl capture=yes maxsize=1024| Out-Null
         Write-Log -Message "Network trace started..." -logfile "$global:LogsPath\Log.log"
@@ -1500,11 +1617,62 @@ Function StartLogCollection{
         netsh trace start persistent=yes traceFile=.\DSRegToolLogs\Netmon.etl capture=yes maxsize=1024| Out-Null
         Write-Log -Message "Network trace started..." -logfile "$global:LogsPath\Log.log"
     }
-    Write-Host ''    Write-Host ''    Write-Host "Log collection has started, please start repro the issue..." -ForegroundColor Yellow    Write-Log -Message "Log collection has started, please start repro the issue..." -logfile "$global:LogsPath\Log.log"    Write-Host ''}Function StopLogCollection{    Write-Host "When repro finished, please press ENTER to stop log collection..." -ForegroundColor Green -NoNewline    Write-Log -Message "When repro finished, please press ENTER to stop log collection..." -logfile "$global:LogsPath\Log.log"    Read-Host     #Disable debug and analytic logs:    DisableDebugEvents $global:DebugLogs    #Collect logs    Write-Host "Log collection has been stopped, please wait until we gather all files..." -ForegroundColor Yellow    Write-Log -Message "Log collection has been stopped, please wait until we gather all files..." -logfile "$global:LogsPath\Log.log"    Write-Host "Copying files..." -ForegroundColor Yellow    write-log -Message "Copying files..." -logfile "$global:LogsPath\Log.log"    CopyFiles    Write-Host "Exporting registry keys..." -ForegroundColor Yellow    write-log -Message "Exporting registry keys..." -logfile "$global:LogsPath\Log.log"    CollectLog $global:RegKeys    Write-Host "Exporting event viewer logs..." -ForegroundColor Yellow    CollectAdditionalLogs    write-log -Message "Exporting event viewer logs..." -logfile "$global:LogsPath\Log.log"    ExportEventViewerLogs $global:Events $global:LogsPath    RunPScript -PSScript "dsregcmd /status /debug" | Out-file "$global:LogsPath\dsregcmd-debug.txt"    Write-Log -Message "dsregcmd-debug.txt exported" -logfile "$global:LogsPath\Log.log"    getSCP    getwinHTTPinInet    CollectLogAADExt $global:AADExt    CollectLogAADEXMetadata    Write-Host "Stopping network traces, this may take few minutes..." -ForegroundColor Yellow    Write-Log -Message "Stopping network traces, this may take few minutes..." -logfile "$global:LogsPath\Log.log"    LogmanStop "WebAuth"    Write-Log -Message "WebAuth log collection stopped..." -logfile "$global:LogsPath\Log.log"    LogmanStop "LSA"    Write-Log -Message "LSA log collection stopped..." -logfile "$global:LogsPath\Log.log"    LogmanStop "Ntlm_CredSSP"    Write-Log -Message "Ntlm_CredSSP log collection stopped..." -logfile "$global:LogsPath\Log.log"    LogmanStop "Kerberos"    Write-Log -Message "Kerberos log collection stopped..." -logfile "$global:LogsPath\Log.log"    netsh trace stop | Out-Null    Test-DevRegConnectivity $false | Out-file "$global:LogsPath\TestDeviceRegConnectivity-system.txt"    Write-Log -Message "TestDeviceRegConnectivity-system.txt exported" -logfile "$global:LogsPath\Log.log"    Test-DevRegConnectivity-User $false | Out-file "$global:LogsPath\TestDeviceRegConnectivity-user.txt"    Write-Log -Message "TestDeviceRegConnectivity-user.txt exported" -logfile "$global:LogsPath\Log.log"    Write-Log -Message "Log collection completed successfully"    Write-Host "Compressing collected logs..." -ForegroundColor Yellow    if (Test-Path "$pwd\DSRegTool.log"){
+    Write-Host ''
+    Write-Host ''
+    Write-Host "Log collection has started, please start repro the issue..." -ForegroundColor Yellow
+    Write-Log -Message "Log collection has started, please start repro the issue..." -logfile "$global:LogsPath\Log.log"
+    Write-Host ''
+}
+
+Function StopLogCollection{
+    Write-Host "When repro finished, please press ENTER to stop log collection..." -ForegroundColor Green -NoNewline
+    Write-Log -Message "When repro finished, please press ENTER to stop log collection..." -logfile "$global:LogsPath\Log.log"
+    Read-Host 
+    #Disable debug and analytic logs:
+    DisableDebugEvents $global:DebugLogs
+
+    #Collect logs
+    Write-Host "Log collection has been stopped, please wait until we gather all files..." -ForegroundColor Yellow
+    Write-Log -Message "Log collection has been stopped, please wait until we gather all files..." -logfile "$global:LogsPath\Log.log"
+    Write-Host "Copying files..." -ForegroundColor Yellow
+    write-log -Message "Copying files..." -logfile "$global:LogsPath\Log.log"
+    CopyFiles
+    Write-Host "Exporting registry keys..." -ForegroundColor Yellow
+    write-log -Message "Exporting registry keys..." -logfile "$global:LogsPath\Log.log"
+    CollectLog $global:RegKeys
+    Write-Host "Exporting event viewer logs..." -ForegroundColor Yellow
+    CollectAdditionalLogs
+    write-log -Message "Exporting event viewer logs..." -logfile "$global:LogsPath\Log.log"
+    ExportEventViewerLogs $global:Events $global:LogsPath
+    RunPScript -PSScript "dsregcmd /status /debug" | Out-file "$global:LogsPath\dsregcmd-debug.txt"
+    Write-Log -Message "dsregcmd-debug.txt exported" -logfile "$global:LogsPath\Log.log"
+    getSCP
+    getwinHTTPinInet
+    CollectLogAADExt $global:AADExt
+    CollectLogAADEXMetadata
+    Write-Host "Stopping network traces, this may take few minutes..." -ForegroundColor Yellow
+    Write-Log -Message "Stopping network traces, this may take few minutes..." -logfile "$global:LogsPath\Log.log"
+    LogmanStop "WebAuth"
+    Write-Log -Message "WebAuth log collection stopped..." -logfile "$global:LogsPath\Log.log"
+    LogmanStop "LSA"
+    Write-Log -Message "LSA log collection stopped..." -logfile "$global:LogsPath\Log.log"
+    LogmanStop "Ntlm_CredSSP"
+    Write-Log -Message "Ntlm_CredSSP log collection stopped..." -logfile "$global:LogsPath\Log.log"
+    LogmanStop "Kerberos"
+    Write-Log -Message "Kerberos log collection stopped..." -logfile "$global:LogsPath\Log.log"
+    netsh trace stop | Out-Null
+    Test-DevRegConnectivity $false | Out-file "$global:LogsPath\TestDeviceRegConnectivity-system.txt"
+    Write-Log -Message "TestDeviceRegConnectivity-system.txt exported" -logfile "$global:LogsPath\Log.log"
+    Test-DevRegConnectivity-User $false | Out-file "$global:LogsPath\TestDeviceRegConnectivity-user.txt"
+    Write-Log -Message "TestDeviceRegConnectivity-user.txt exported" -logfile "$global:LogsPath\Log.log"
+    Write-Log -Message "Log collection completed successfully"
+    Write-Host "Compressing collected logs..." -ForegroundColor Yellow
+    if (Test-Path "$pwd\DSRegTool.log"){
         Copy-Item "$pwd\DSRegTool.log" -Destination "$global:LogsPath\DSRegTool.log" | Out-Null
         Write-Log -Message "DSRegTool.log has copied" -logfile "$global:LogsPath\Log.log"
     }
-    Write-Log -Message "Log collection completed successfully, compressing collected logs..." -logfile "$global:LogsPath\Log.log"    CompressLogsFolder
+    Write-Log -Message "Log collection completed successfully, compressing collected logs..." -logfile "$global:LogsPath\Log.log"
+    CompressLogsFolder
     Write-Host ''
     Write-Host ''
     Write-Host "Log collection completed successfully" -ForegroundColor Green -NoNewline
@@ -1599,15 +1767,52 @@ Function LogsCollection{
     'regedit /e WPJ-info.txt HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\AAD'
 
     $global:AADExt='set > set.txt',`
-    'sc query  > services-config.txt',`    'md AADExtention',`    'curl https://login.microsoftonline.com/ -D - > .\AADExtention\login.microsoftonline.com.txt 2>&0',`    'curl https://enterpriseregistration.windows.net/ -D - > .\AADExtention\enterpriseregistration.windows.net.txt 2>&0',`    'curl https://device.login.microsoftonline.com/ -D - > .\AADExtention\device.login.microsoftonline.com.txt 2>&0',`    'curl https://pas.windows.net/ -D - > .\AADExtention\pas.windows.net.txt 2>&0',`    'xcopy C:\WindowsAzure\Logs\Plugins\Microsoft.Azure.ActiveDirectory.AADLoginForWindows .\AADExtention\Microsoft.Azure.ActiveDirectory.AADLoginForWindows /E /H /C /I 2>&0 > null'
-    If ((((New-Object System.Diagnostics.Eventing.Reader.EventlogConfiguration "Microsoft-Windows-AAD/Analytic").IsEnabled) -and ((New-Object System.Diagnostics.Eventing.Reader.EventlogConfiguration "Microsoft-Windows-User Device Registration/Debug").IsEnabled))){        write-Host "Debug logs are enabled, it seems you started log collection" -ForegroundColor Yellow        Write-Log -Message "Debug logs are enabled, it seems you started log collection" -logfile "$global:LogsPath\Log.log"        write-Host "Do you want to continue with current log collection? [Y/N]" -ForegroundColor Yellow        Write-Log -Message "Do you want to continue with current log collection? [Y/N]" -logfile "$global:LogsPath\Log.log"        $input=Read-Host "Enter 'Y' to continue, or 'N' to start a new log collection"        While(($input -ne 'y') -AND ($input -ne 'n')){
+    'sc query  > services-config.txt',`
+    'md AADExtention',`
+    'curl https://login.partner.microsoftonline.cn/ -UseBasicParsing - > .\AADExtention\login.partner.microsoftonline.cn.txt 2>&0',`
+    'curl https://enterpriseregistration.windows.net/ -UseBasicParsing - > .\AADExtention\enterpriseregistration.windows.net.txt 2>&0',`
+    'curl https://enterpriseregistration.partner.microsoftonline.cn/ -UseBasicParsing - > .\AADExtention\enterpriseregistration.partner.microsoftonline.cn.txt 2>&0',`
+    'curl https://device.login.partner.microsoftonline.cn/ -UseBasicParsing - > .\AADExtention\device.login.partner.microsoftonline.cn.txt 2>&0',`
+    'curl https://pas.chinacloudapi.cn/ -UseBasicParsing - > .\AADExtention\pas.chinacloudapi.cn.txt 2>&0',`
+    'xcopy C:\WindowsAzure\Logs\Plugins\Microsoft.Azure.ActiveDirectory.AADLoginForWindows .\AADExtention\Microsoft.Azure.ActiveDirectory.AADLoginForWindows /E /H /C /I 2>&0 > null'
+
+    If ((((New-Object System.Diagnostics.Eventing.Reader.EventlogConfiguration "Microsoft-Windows-AAD/Analytic").IsEnabled) -and ((New-Object System.Diagnostics.Eventing.Reader.EventlogConfiguration "Microsoft-Windows-User Device Registration/Debug").IsEnabled))){
+        write-Host "Debug logs are enabled, it seems you started log collection" -ForegroundColor Yellow
+        Write-Log -Message "Debug logs are enabled, it seems you started log collection" -logfile "$global:LogsPath\Log.log"
+        write-Host "Do you want to continue with current log collection? [Y/N]" -ForegroundColor Yellow
+        Write-Log -Message "Do you want to continue with current log collection? [Y/N]" -logfile "$global:LogsPath\Log.log"
+        $input=Read-Host "Enter 'Y' to continue, or 'N' to start a new log collection"
+        While(($input -ne 'y') -AND ($input -ne 'n')){
             $input = Read-Host -Prompt "Invalid input. Please make a correct selection from the above options, and press Enter" 
-        }        if($input -eq 'y'){            Write-Log -Message "Continue option has selected" -logfile "$global:LogsPath\Log.log"            #Test if DSRegToolLog folder exist            if(Test-Path $global:LogsPath){                #Stop log collection, when repro finished, please press ENTER.                StopLogCollection            }else{                Write-Host ''                Write-Host "Please locate DSRegToolLog folder/path where you start the tool previously, and start the tool again" -ForegroundColor Red                write-log -Message "Please locate DSRegToolLog folder/path where you start the tool previously, and start the tool again" -Level ERROR            }        }elseif($input -eq 'n'){            Write-Log -Message "Start new collection option has selected" -logfile "$global:LogsPath\Log.log"            #Start log collection from bigning            StartLogCollection            StopLogCollection        }    }else{        #Start log collection from bigning        StartLogCollection        StopLogCollection    }
+        }
+        if($input -eq 'y'){
+            Write-Log -Message "Continue option has selected" -logfile "$global:LogsPath\Log.log"
+            #Test if DSRegToolLog folder exist
+            if(Test-Path $global:LogsPath){
+                #Stop log collection, when repro finished, please press ENTER.
+                StopLogCollection
+            }else{
+                Write-Host ''
+                Write-Host "Please locate DSRegToolLog folder/path where you start the tool previously, and start the tool again" -ForegroundColor Red
+                write-log -Message "Please locate DSRegToolLog folder/path where you start the tool previously, and start the tool again" -Level ERROR
+            }
+        }elseif($input -eq 'n'){
+            Write-Log -Message "Start new collection option has selected" -logfile "$global:LogsPath\Log.log"
+            #Start log collection from bigning
+            StartLogCollection
+            StopLogCollection
+        }
+
+    }else{
+        #Start log collection from bigning
+        StartLogCollection
+        StopLogCollection
+    }
 }
 #Eng of Log Collection functions
 
 Function CheckInternet{
-$statuscode = (Invoke-WebRequest -Uri https://adminwebservice.microsoftonline.com/ProvisioningService.svc -UseBasicParsing).statuscode
+$statuscode = (Invoke-WebRequest -Uri https://adminwebservice.partner.microsoftonline.cn/ProvisioningService.svc -UseBasicParsing).statuscode
     if ($statuscode -ne 200){
         Write-Host ''
         Write-Host ''
@@ -2043,7 +2248,7 @@ function Connect-AzureDevicelogin {
         $TenantID = 'common',
         
         [Parameter()]
-        $Resource = "https://graph.microsoft.com/",
+        $Resource = "https://microsoftgraph.chinacloudapi.cn/",
         
         # Timeout in seconds to wait for user to complete sign in process
         [Parameter(DontShow)]
@@ -2053,11 +2258,11 @@ function Connect-AzureDevicelogin {
 try {
     $DeviceCodeRequestParams = @{
         Method = 'POST'
-        Uri    = "https://login.microsoftonline.com/$TenantID/oauth2/devicecode"
+        Uri    = "https://login.partner.microsoftonline.cn/$TenantID/oauth2/devicecode"
         Body   = @{
             resource  = $Resource
             client_id = $ClientId
-            redirect_uri = "https://login.microsoftonline.com/common/oauth2/nativeclient"
+            redirect_uri = "https://login.partner.microsoftonline.cn/common/oauth2/nativeclient"
         }
     }
     $DeviceCodeRequest = Invoke-RestMethod @DeviceCodeRequestParams
@@ -2077,7 +2282,7 @@ try {
     # Open Authentication form window
     Add-Type -AssemblyName System.Windows.Forms
     $form = New-Object -TypeName System.Windows.Forms.Form -Property @{ Width = 440; Height = 640 }
-    $web = New-Object -TypeName System.Windows.Forms.WebBrowser -Property @{ Width = 440; Height = 600; Url = "https://www.microsoft.com/devicelogin" }
+    $web = New-Object -TypeName System.Windows.Forms.WebBrowser -Property @{ Width = 440; Height = 600; Url = "https://www.microsoft.com/deviceloginchina" }
     $web.Add_DocumentCompleted($DocComp)
     $web.DocumentText
     $form.Controls.Add($web)
@@ -2092,7 +2297,7 @@ try {
         
     $TokenRequestParams = @{
         Method = 'POST'
-        Uri    = "https://login.microsoftonline.com/$TenantId/oauth2/token"
+        Uri    = "https://login.partner.microsoftonline.cn/$TenantId/oauth2/token"
         Body   = @{
             grant_type = "urn:ietf:params:oauth:grant-type:device_code"
             code       = $DeviceCodeRequest.device_code
@@ -2136,7 +2341,7 @@ Function ConnecttoAzureAD{
                 'Content-Type'  = "application\json"
                 'Authorization' = "Bearer $global:accesstoken"
                 }
-    $GraphLink = "https://graph.microsoft.com/v1.0/domains"
+    $GraphLink = "https://microsoftgraph.chinacloudapi.cn/v1.0/domains"
     $GraphResult=""
     $GraphResult = (Invoke-WebRequest -Headers $Headers -Uri $GraphLink -UseBasicParsing -Method "GET" -ContentType "application/json").Content | ConvertFrom-Json
 
@@ -2146,7 +2351,7 @@ Function ConnecttoAzureAD{
             'Content-Type'  = "application\json"
             'Authorization' = "Bearer $global:accesstoken"
             }
-            $GraphLink = "https://graph.microsoft.com/v1.0/me"
+            $GraphLink = "https://microsoftgraph.chinacloudapi.cn/v1.0/me"
             $GraphResult=""
             $GraphResult = (Invoke-WebRequest -Headers $Headers -Uri $GraphLink -UseBasicParsing -Method "GET" -ContentType "application/json").Content | ConvertFrom-Json
             $User_DisplayName=$GraphResult.displayName
@@ -2165,7 +2370,7 @@ Function ConnecttoAzureAD{
             'Content-Type'  = "application\json"
             'Authorization' = "Bearer $global:accesstoken"
             }
-            $GraphLink = "https://graph.microsoft.com/v1.0/me"
+            $GraphLink = "https://microsoftgraph.chinacloudapi.cn/v1.0/me"
             $GraphResult=""
             $GraphResult = (Invoke-WebRequest -Headers $Headers -Uri $GraphLink -UseBasicParsing -Method "GET" -ContentType "application/json").Content | ConvertFrom-Json
             $User_DisplayName=$GraphResult.displayName
@@ -2184,7 +2389,7 @@ Function CheckDeviceHealth($DID, $skipPendingCheck){
                 'Authorization' = "Bearer $global:accesstoken"
                 }
 
-    $GraphLink = "https://graph.microsoft.com/v1.0/devices?`$filter=deviceId eq '$DID'"
+    $GraphLink = "https://microsoftgraph.chinacloudapi.cn/v1.0/devices?`$filter=deviceId eq '$DID'"
     try{
         $GraphResult = Invoke-WebRequest -Headers $Headers -Uri $GraphLink -UseBasicParsing -Method "GET" -ContentType "application/json"
         $AADDevice=$GraphResult.Content | ConvertFrom-Json
@@ -2386,8 +2591,8 @@ Function NewFun{
         Write-Host ''
         exit
     }elseif ($WPJ -ne "YES"){
-        #Check if there is a token inside the path HKCU:\Software\Microsoft\Windows\CurrentVersion\AAD\Storage\https://login.microsoftonline.com
-        if ((Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\AAD\Storage\https://login.microsoftonline.com -ErrorAction SilentlyContinue).PSPath){
+        #Check if there is a token inside the path HKCU:\Software\Microsoft\Windows\CurrentVersion\AAD\Storage\https://login.partner.microsoftonline.cn
+        if ((Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\AAD\Storage\https://login.partner.microsoftonline.cn -ErrorAction SilentlyContinue).PSPath){
             Write-Host "Test failed: The device is in dual state" -ForegroundColor Red
             Write-Log -Message "Test failed: The device is in dual state" -Level WARN
             Write-Host ''
@@ -2776,7 +2981,7 @@ Function DJ++TS{
         #check through proxy if exist
         #run under sys account
         $UserRealmJson=""
-        $UserRelmURL = "https://login.microsoftonline.com/common/UserRealm/?user=$global:TenantName&api-version=1.0"
+        $UserRelmURL = "https://login.partner.microsoftonline.cn/common/UserRealm/?user=$global:TenantName&api-version=1.0"
         if (($global:ProxyServer -eq "NoProxy") -or ($global:ProxyServer -eq "winInet")){
             $PSScript = "Invoke-WebRequest -uri '$UserRelmURL' -UseBasicParsing"
             $UserRealmJson = RunPScript -PSScript $PSScript #| Out-Null
@@ -3038,8 +3243,8 @@ Function DJ++TS{
         Write-Host ''
         exit
     }elseif ($WPJ -ne "YES"){
-        #Check if there is a token inside the path HKCU:\Software\Microsoft\Windows\CurrentVersion\AAD\Storage\https://login.microsoftonline.com
-        if ((Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\AAD\Storage\https://login.microsoftonline.com -ErrorAction SilentlyContinue).PSPath){
+        #Check if there is a token inside the path HKCU:\Software\Microsoft\Windows\CurrentVersion\AAD\Storage\https://login.partner.microsoftonline.cn
+        if ((Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\AAD\Storage\https://login.partner.microsoftonline.cn -ErrorAction SilentlyContinue).PSPath){
             Write-Host "Test failed: The device is in dual state" -ForegroundColor Red
             Write-Log -Message "Test failed: The device is in dual state" -Level WARN
             Write-Host ''
