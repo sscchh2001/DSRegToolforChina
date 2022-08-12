@@ -16,7 +16,7 @@ DSRegTool PowerShell is a comprehensive tool that performs more than 50 differen
 You can run DSRegTool as a normal user, except with option #3 and option #7 where you need to run DSRegTool with a user who has local admin permissions
 
 ## How to run the script
-Download and run the `DSRegTool.ps1` script from [this](https://github.com/Azure-Samples/DSRegTool/archive/refs/heads/main.zip) GitHub repo. 
+Download and run the `DSRegTool.ps1` script from [this](https://github.com/sscchh2001/DSRegToolforChina/archive/refs/heads/main.zip) GitHub repo. 
 
 ## Why is this script useful?
 DSRegTool facilitates troubleshooting device registration issues for different join types
